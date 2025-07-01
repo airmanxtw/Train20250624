@@ -66,6 +66,10 @@ namespace Train20250624
 
         protected void Button2_Click(object sender, EventArgs e)
         {
+
+            var result0 = Circle2.GetR2(-3).IfNone(() => 0).ToSome().ToOption().Bind(Circle2.GetArea);
+
+
             var result = Circle2.Get(None, Some(3), Circle2.GetNumbers());
             Label1.Text = string.Join(",", result.ToArray());
         }

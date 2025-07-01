@@ -18,15 +18,13 @@ namespace Train20250624.Helper
 
         public static List<int> GetNumbers()=>new List<int> { 1, 2, 3, 4, 5,6,7,8,9,10 };
 
-        public static List<int> Get(Option<int> min,Option<int> max,List<int> Numbs)
-        {
-            return 
-                Numbs
-                .Where(n=>min.ForAll(m => n >= m) && max.ForAll(x => n <= x))
-                .ToList();
+        public static List<int> Get(Option<int> min,Option<int> max,List<int> Numbs)=>
+        Numbs
+        .Where(n=>min.ForAll(m => n >= m) && max.ForAll(x => n <= x))
+        .ToList();
 
 
-        }
+
 
 
     }
