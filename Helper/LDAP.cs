@@ -32,6 +32,16 @@ namespace Train20250624.Helper
                         ? new List<LoginUser>()
                         : new List<LoginUser> { user };
 
+        public static bool VerifyFacultyLDAP(LoginUser user)
+        {         
+            return user.userName == "airmanx" && user.userPassword == "12345678";
+        }
+
+        public static bool VerifyStudentLDAP(LoginUser user)
+        {
+            return user.userName == "S1234567" && user.userPassword == "12345678";
+        }
+
 
 
     }

@@ -23,9 +23,25 @@ namespace Train20250624.Helper
         .Where(n=>min.ForAll(m => n >= m) && max.ForAll(x => n <= x))
         .ToList();
 
+        public static List<int> Get(int? min, int? max, List<int> Numbs)
+        {
+            if (min == null || max == null)
+            {
+                return Numbs;
+            }
+            else if (min == null)
+            {
+                return Numbs.Where(n => n <= max).ToList();
+            }
+            else if (max == null)
+            {
+                return Numbs.Where(n => n >= min).ToList();
+            }
+            else
+            {
+                return Numbs.Where(n => n >= min && n <= max).ToList();
 
-
-
-
+            }
+        }
     }
 }
