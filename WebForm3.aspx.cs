@@ -34,7 +34,7 @@ namespace Train20250624
                    userName = UserIdTextBox.Text,
                    userPassword = PasswordTextBox.Text
                };
-               if(LDAP.VerifyFacultyLDAP(user) || LDAP.VerifyFacultyLDAP(user))                
+               if(LDAP.VerifyFacultyLDAP(user) || LDAP.VerifyStudentLDAP(user))                
                     MsgLabel.Text = "Login successful as Faculty or Student.";                
                else                
                     MsgLabel.Text = "Login failed. Please check your User ID and Password.";                
