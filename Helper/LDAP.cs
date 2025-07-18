@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LanguageExt;
+using static LanguageExt.Prelude;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -42,7 +44,17 @@ namespace Train20250624.Helper
             return user.userName == "S1234567" && user.userPassword == "12345678";
         }
 
-
+        public static Func<LoginUser, Either<string, bool>> Verify(Func<LoginUser, bool> VerifyLDAP) => (LoginUser user) =>
+        {
+            try
+            {
+                return Right<string, bool>(VerifyLDAP(user));
+            }
+            catch (Exception ex)
+            {
+                return Left<string, bool>(ex.Message);
+            }
+        };
 
     }
 }

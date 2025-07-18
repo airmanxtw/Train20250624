@@ -6,43 +6,56 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Train20250624.Helper;
+using LanguageExt;
+using static LanguageExt.Prelude;
+using LanguageExt.SomeHelp;
 
 namespace Train20250624
 {
     public partial class WebForm3 : System.Web.UI.Page
     {
-        
+       
+        private Option<string> FindError(string str,Func<string,bool> rule, string errorMessage)=>
+            Cond<string>(rule).Then(s => Some(errorMessage)).Else(None).Invoke(str);
+
+        private Option<IEnumerable<string>> FindLoginUserErrors(LDAP.LoginUser user) =>
+        List(
+            FindError(user.userName, string.IsNullOrWhiteSpace, "User ID cannot be empty."),
+            FindError(user.userPassword, string.IsNullOrWhiteSpace, "Password cannot be empty."),
+            FindError(user.userName, s => s.Length > 20, "User ID cannot be longer than 20 characters."),
+            FindError(user.userPassword, s => s.Length > 20, "Password cannot be longer than 20 characters.")
+        )
+        .Somes().ToSome().ToOption();
+
+        private Either<string, LDAP.LoginUser> ValidLoginUserInput(LDAP.LoginUser user) =>
+            FindLoginUserErrors(user).Match(
+                r => Left<string, LDAP.LoginUser>(string.Join(",",r.ToArray())), 
+                () => Right<string, LDAP.LoginUser>(user)
+            );
+
+        private Either<string, LDAP.LoginUser> ValidLoginUserLDAP(LDAP.LoginUser user) =>
+        Cond<bool>(b => b)
+        .Then(Right<string, LDAP.LoginUser>(user))
+        .Else(Left<string, LDAP.LoginUser>("登入驗證錯誤"))
+        .Invoke(
+            List(LDAP.Verify(LDAP.VerifyFacultyLDAP), LDAP.Verify(LDAP.VerifyStudentLDAP)).TakeWhile(f => f(user).IsRight).Count() > 0
+        );
+
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
-            List<string> Errors = new List<string>();
-            if (string.IsNullOrEmpty(UserIdTextBox.Text))
-                Errors.Add("User ID cannot be empty.");
-
-            if (string.IsNullOrEmpty(PasswordTextBox.Text))
-                Errors.Add("Password cannot be empty.");
-
-            if(UserIdTextBox.Text.Length > 20)
-                Errors.Add("User ID cannot be longer than 20 characters.");
-
-            if (PasswordTextBox.Text.Length > 20)
-                Errors.Add("Password cannot be longer than 20 characters.");
-
-            if (Errors.Count == 0)
-            {
-               LDAP.LoginUser user = new LDAP.LoginUser
-               {
-                   userName = UserIdTextBox.Text,
-                   userPassword = PasswordTextBox.Text
-               };
-               if(LDAP.VerifyFacultyLDAP(user) || LDAP.VerifyStudentLDAP(user))                
-                    MsgLabel.Text = "Login successful as Faculty or Student.";                
-               else                
-                    MsgLabel.Text = "Login failed. Please check your User ID and Password.";                
-            }
-            else
-            {
-                MsgLabel.Text = string.Join("<br/>", Errors);
-            }
+            ValidLoginUserInput(LDAP.GenLoginUser(UserIdTextBox.Text, PasswordTextBox.Text).First())
+            .Bind(ValidLoginUserLDAP)
+            .Match(
+                u =>
+                {
+                    MsgLabel.Text = "登入成功";
+                }, 
+                s =>
+                {
+                    MsgLabel.Text = s;
+                }
+             );
         }
+           
     }
 }

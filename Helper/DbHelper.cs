@@ -16,13 +16,18 @@ namespace Train20250624.Helper
         public DbHelper()
         {
             string dbpath = HttpContext.Current.Server.MapPath("~/App_Data2/demo.db");
-            _conn = new SQLiteConnection($"data source={dbpath}");            
+            _conn = new SQLiteConnection($"data source={dbpath}"); 
+            
+
         }
 
         public Option<Models.Stud> GetData(string Studno)
         {
             try
             {
+                var a = new { studno = "123" };
+                
+
                 return Some(_conn.QuerySingle<Models.Stud>("select * from stud where studno = @studno", new { studno = Studno }));            
             }
             catch(Exception)
