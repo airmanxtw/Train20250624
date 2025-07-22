@@ -12,9 +12,29 @@ using LanguageExt.SomeHelp;
 
 namespace Train20250624
 {
+
+   
+
     public partial class WebForm3 : System.Web.UI.Page
     {
-       
+
+       private Option<int> Add(int x) =>
+       Cond<int>(i => i > 0).Then(i => Some(i)).Else(None).Invoke(x);
+
+       private Option<int> retry(Option<int> f, int x)
+        {
+
+            var result = Enumerable.Repeat(f, x).Fold(f, (acc, func) =>
+            {
+                return acc.BiBind(v => Some(v), () => {
+                    System.Threading.Thread.Sleep(1000);
+                    return func; });
+            });
+
+            return result;
+        }
+            
+
         private Option<string> FindError(string str,Func<string,bool> rule, string errorMessage)=>
             Cond<string>(rule).Then(s => Some(errorMessage)).Else(None).Invoke(str);
 
@@ -56,6 +76,13 @@ namespace Train20250624
                 }
              );
         }
-           
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            retry(Add(2),5).Match(
+                Some: result => MsgLabel.Text = $"Result: {result}",
+                None: () => MsgLabel.Text = "No valid result found."
+            );
+        }
     }
 }

@@ -23,6 +23,7 @@
         </div>
         <div style="margin-top:10px">
             <asp:Button ID="SubmitButton" runat="server" Text="登入" OnClick="SubmitButton_Click" />
+            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
         </div>
         <div style="margin-top:5px">
             <asp:Label ID="MsgLabel" runat="server" ForeColor="Red"></asp:Label>

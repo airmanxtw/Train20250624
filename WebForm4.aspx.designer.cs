@@ -11,7 +11,7 @@ namespace Train20250624
 {
 
 
-    public partial class WebForm3
+    public partial class WebForm4
     {
 
         /// <summary>
@@ -24,33 +24,6 @@ namespace Train20250624
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// UserIdTextBox 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox UserIdTextBox;
-
-        /// <summary>
-        /// PasswordTextBox 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
-
-        /// <summary>
-        /// SubmitButton 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SubmitButton;
-
-        /// <summary>
         /// Button1 控制項。
         /// </summary>
         /// <remarks>
@@ -60,12 +33,12 @@ namespace Train20250624
         protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// MsgLabel 控制項。
+        /// Label1 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MsgLabel;
+        protected global::System.Web.UI.WebControls.Label Label1;
     }
 }
